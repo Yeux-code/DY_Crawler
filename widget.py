@@ -365,14 +365,14 @@ class Widget(QWidget):
         #self.table_window = self.driver.current_window_handle
         # elementsx = self.driver.find_elements(By.CSS_SELECTOR, "div.content-layout-has-nav")
         # print(f"找到 {len(elementsx)} 个元素！")
-        self.right_most_page = self.switch_to_rightmost_window()
+        
         #如果已经采集了达人抖音主页信息，清空已经采集的达人抖音号列表
         if self.caiji_flag:
             self.dy_nums = []
         if self.next_page_flag:
             self.driver.switch_to.window(self.right_most_page)
         else:
-            self.switch_to_rightmost_window()
+            self.right_most_page = self.switch_to_rightmost_window()
         #获取带货内容达人表格
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "div.index_module__name____8794"))
