@@ -127,8 +127,8 @@ class Widget(QWidget):
     #切换到最右边标签页
     def switch_to_rightmost_window(self):
         time.sleep(1)
-        if self.driver.session_id:
-            # 获取所有窗口句柄
+        try:
+        # 获取所有窗口句柄
             all_windows = self.driver.window_handles
             # 假设最后一个句柄是最右边的标签页
             rightmost_window = all_windows[-1]
@@ -136,7 +136,11 @@ class Widget(QWidget):
             self.driver.switch_to.window(rightmost_window)
             print(f"切换到窗口: {rightmost_window}, 标题是: {self.driver.title}")
             return rightmost_window
-        return False
+        except Exception as e:
+            print("浏览器会话无效，无法关闭")
+            self.close_chrome()
+            return False
+            
 
   
             
@@ -160,6 +164,8 @@ class Widget(QWidget):
         #self.ui.pushButton_3.setEnabled(False)
 
         right_most_page = self.switch_to_rightmost_window()
+        if right_most_page == False:
+            return
         for douyin_num in self.dy_nums:
             if douyin_num=="":
                 continue
@@ -373,6 +379,8 @@ class Widget(QWidget):
             self.driver.switch_to.window(self.right_most_page)
         else:
             self.right_most_page = self.switch_to_rightmost_window()
+            if self.right_most_page == False:
+                return
         #获取带货内容达人表格
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "div.index_module__name____8794"))
